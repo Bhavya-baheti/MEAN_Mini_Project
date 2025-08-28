@@ -1,28 +1,24 @@
 const express = require('express');
-
-const cors = require('cors');
-
 const bodyParser = require('body-parser');
 const { MongoClient } = require('mongodb');
- 
+const cors = require('cors');
+
 const app = express();
-
-
-// Enable CORS for all routes
-app.use(cors());
 app.use(bodyParser.json());
- 
+app.use(cors());
+
 // MongoDB connection URI
-const uri = "mongodb://localhost:27017";
+// MongoDB connection URI
+const uri = "mongodb+srv://akshmdb:champ%40123@akshmongodb.global.mongocluster.cosmos.azure.com/?tls=true&authMechanism=SCRAM-SHA-256&retrywrites=false&maxIdleTimeMS=120000";
 const client = new MongoClient(uri);
- 
+
 // Database and collection
 let db, productCollection;
- 
+
 async function connectDB() {
   try {
     await client.connect();
-    db = client.db('shoppingdb');
+    db = client.db('shoppingDB');
     productCollection = db.collection('productList');
     console.log("✅ Connected to MongoDB");
   } catch (error) {
@@ -30,7 +26,7 @@ async function connectDB() {
   }
 }
 connectDB();
- 
+
 // CREATE - Add new product
 app.post('/products', async (req, res) => {
   try {
@@ -40,7 +36,7 @@ app.post('/products', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
- 
+
 // READ - Get all products
 app.get('/products', async (req, res) => {
   try {
@@ -50,7 +46,7 @@ app.get('/products', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
- 
+
 // READ - Get single product by ID
 app.get('/products/:id', async (req, res) => {
   try {
@@ -62,7 +58,7 @@ app.get('/products/:id', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
- 
+
 // UPDATE - Update product by ID
 app.put('/products/:id', async (req, res) => {
   try {
@@ -76,7 +72,7 @@ app.put('/products/:id', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
- 
+
 // DELETE - Remove product by ID
 app.delete('/products/:id', async (req, res) => {
   try {
@@ -87,7 +83,7 @@ app.delete('/products/:id', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
- 
+
 // Start server
 const PORT = 3003;
 app.listen(PORT, () => {
